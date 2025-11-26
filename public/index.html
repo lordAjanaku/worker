@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auth App - Login/Signup</title>
+    <script type="module" src="../src/app.js"></script>
+    <link rel="stylesheet" href="../src/style.css" />
+    <!-- Development version -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script type="module" src="../src/validation.js"></script>
+
+    <!-- Production version -->
+    <!-- <script src="https://unpkg.com/lucide@latest"></script> -->
+    <style></style>
+  </head>
+  <body>
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+    <!-- Auth Page -->
+    <div id="authPage" class="auth-container">
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1 id="authTitle" class="auth-title">Welcome Back</h1>
+          <p id="authSubtitle" class="auth-subtitle">Sign in to your account</p>
+        </div>
+
+        <form id="authForm">
+          <!-- Name field (hidden for login) -->
+          <div id="nameGroup" class="form-group hidden name-group">
+            <label class="form-label">Full Name</label>
+            <div class="input-group">
+              <i data-lucide="user" class="input-icon"></i>
+              <input name="fullName" type="text" id="nameInput" class="form-input" placeholder="Enter your full name" />
+            </div>
+          </div>
+
+          <!-- Email field -->
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <div class="input-group">
+              <i data-lucide="mail" class="input-icon"></i>
+              <input name="email" type="email" id="emailInput" class="form-input" placeholder="Enter your email" />
+            </div>
+          </div>
+
+          <!-- Username field (hidden for login) -->
+          <div id="userGroup" class="form-group hidden name-group">
+            <label class="form-label">Username</label>
+            <div class="input-group">
+              <i data-lucide="user" class="input-icon"></i>
+              <input name="username" type="text" id="usernameInput" class="form-input" placeholder="Enter your username" />
+            </div>
+          </div>
+
+          <!-- Password field -->
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="input-group">
+              <i data-lucide="lock" class="input-icon"></i>
+              <input name="password" type="password" id="passwordInput" class="form-input" placeholder="Enter your password" />
+              <button type="button" id="passwordToggle" class="password-toggle">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Confirm Password field (hidden for login) -->
+          <div id="confirmPasswordGroup" class="form-group hidden">
+            <label class="form-label">Confirm Password</label>
+            <div class="input-group">
+              <i data-lucide="lock" class="input-icon"></i>
+              <input type="password" id="confirmPasswordInput" class="form-input" placeholder="Confirm your password" />
+              <button type="button" id="confirmPasswordToggle" class="password-toggle">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <button id="submitBtn" class="btn">Sign In</button>
+        </form>
+
+        <div class="auth-toggle">
+          <span id="toggleText">Don't have an account?</span>
+          <button id="toggleBtn">Sign up</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboardPage" class="dashboard">
+      <nav class="navbar">
+        <div class="navbar-content">
+          <h1 class="navbar-title">Email Analyzer</h1>
+          <div class="navbar-user">
+            <span id="userInfo" class="user-info">Welcome, User</span>
+            <button id="logoutBtn" class="logout-btn">Logout</button>
+          </div>
+        </div>
+      </nav>
+
+      <main class="main-content">
+        <div class="analysis-grid">
+          <div class="analysis-card">
+            <h2 class="card-title">Email Input</h2>
+            <textarea id="emailTextarea" class="email-textarea" placeholder="Paste your emails here, one per line or separated by commas..."></textarea>
+            <button id="analyzeBtn" class="analyze-btn">
+              <span id="analyzeBtnText">Analyze Emails</span>
+            </button>
+          </div>
+
+          <div class="analysis-card">
+            <h2 class="card-title">Analysis Results</h2>
+            <div id="resultsArea" class="results-area">
+              <div class="results-placeholder">Analysis results will appear here...</div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

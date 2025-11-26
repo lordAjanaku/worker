@@ -1,0 +1,13 @@
+{
+  "name": "email-analysis-worker",
+  "version": "1.0.0",
+  "main": "worker.js",
+  "type": "module",
+  "scripts": {
+    "start": "node worker.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.6",
+    "uuid": "^13.0.0"
+  }
+}
