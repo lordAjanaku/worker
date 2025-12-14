@@ -20,8 +20,8 @@ function showToast(message, type = "success") {
 
   const iconName = type === "success" ? "check-circle" : type === "error" ? "x-circle" : "alert-circle";
 
+  // <i data-lucide="${iconName}"></i>
   toast.innerHTML = `
-    <i data-lucide="${iconName}"></i>
     <span>${message}</span>
     <button class="toast-close" onclick="hideToast(this.parentElement)">&times;</button>
   `;
@@ -29,7 +29,7 @@ function showToast(message, type = "success") {
   toastContainer.appendChild(toast);
 
   // Initialize the new icon
-  lucide.createIcons();
+  // lucide.createIcons();
 
   // Show toast
   setTimeout(() => toast.classList.add("show"), 100);
@@ -84,13 +84,13 @@ function togglePasswordVisibility(inputId, toggleBtn) {
 
   if (input.type === "password") {
     input.type = "text";
-    icon.setAttribute("data-lucide", "eye-off");
+    // icon.setAttribute("data-lucide", "eye-off");
   } else {
     input.type = "password";
-    icon.setAttribute("data-lucide", "eye");
+    // icon.setAttribute("data-lucide", "eye");
   }
 
-  lucide.createIcons();
+  // lucide.createIcons();
 }
 
 // Dashboard functionality

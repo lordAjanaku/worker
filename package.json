@@ -4,7 +4,7 @@
   "main": "worker.js",
   "type": "module",
   "scripts": {
-    "start": "node worker.js"
+    "start": "node src/worker.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.6",
