@@ -198,6 +198,10 @@ async function exportEmails(bulkEmails) {
     //     // Handle updates here
     //   })
     //   .subscribe();
+
+    // const { data, error } = await supabase.functions.invoke('validation', {
+    //   body: { name: 'Functions' },
+    // })
   } catch (error) {
     console.error(error.message);
   }
