@@ -1,4 +1,5 @@
 import { supabase } from "./auth.js";
+import Validation from "../src/validation.js";
 
 class Worker {
   constructor(workerId) {
@@ -43,7 +44,10 @@ class Worker {
       const { data: hasChildJobData, error: hasChildJobError } = await this.hasChildJob(job.job_id);
 
       if (hasChildJobError) {
-        const { data: processNormalJobData, error: processNormalJobError } = await this.processNormalJob(job.job_id);
+        const { error: processNormalJobError } = await this.processNormalJob(job.job_id, job.job_type, job.upload_id);
+
+        if (processNormalJobError) throw error;
+
         return;
       }
 
@@ -85,6 +89,7 @@ class Worker {
 
     if (!data) {
       console.log("hasChildJob > error >>>>: ", data);
+      // console.log("hasChildJob > error >>>>: ", error);
       return { data: null, error: { message: "no child was found" } };
     }
 
@@ -130,7 +135,7 @@ class Worker {
 
   // ---------------------------
 
-  async processNormalJob(jobId) {
+  async processNormalJob(jobId, jobType, uploadId) {
     console.log("process normal job processing...");
 
     const { data, error } = await supabase
@@ -152,7 +157,26 @@ class Worker {
     // ^coming back to this, to check how i will approach all the child jobs
     // }
 
-    console.log(jobId);
+    switch (jobType) {
+      case "validation":
+        console.log("upload-id >>>>", uploadId);
+
+        const { data, error } = await supabase.from("upload_emails").select("email_address").eq("upload_id", uploadId);
+
+        if (error) console.log(error);
+
+        const emails = data.map((email) => Object.values(email)[0]);
+        console.log(emails);
+
+        const validator = new Validation(emails);
+
+        console.log(validator);
+        break;
+
+      default:
+    }
+
+    return;
   }
 
   // ---------------------------

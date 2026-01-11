@@ -166,6 +166,8 @@ async function exportEmails(bulkEmails) {
 
   try {
     const { data: authData } = await supabase.auth.getSession();
+    const { data: emails } = await supabase.from("upload_emails").select("email_address").eq("upload_id", "4b7379dc-9bbb-42a6-9ece-3747774dcada");
+    console.log("from testing >>> ", emails);
 
     if (!authData.session.user) {
       throw new Error("User not signed in");
@@ -199,9 +201,12 @@ async function exportEmails(bulkEmails) {
     //   })
     //   .subscribe();
 
-    // const { data, error } = await supabase.functions.invoke('validation', {
-    //   body: { name: 'Functions' },
-    // })
+    const { data: validationData, error: validationError } = await supabase.functions.invoke("validation", {
+      headers: { Authorization: `Bearer ${authData.session.access_token}` },
+      body: JSON.stringify(dataBody), //to remove the emails property from dataBody
+    });
+
+    console.log("data from validation: ", validationData.data);
   } catch (error) {
     console.error(error.message);
   }
@@ -249,3 +254,318 @@ document.addEventListener("keypress", function (e) {
 });
 
 // // sumeet_sethi@uhc.com, jeviadelpuerto@marathonpetroleum.com, kbouwman@apple.com, aboyle@costco.com, laura.snape@metlife.com, darshini.perera@boeing.com, claudia.neufeld@disney.com, paolomodolo@microsoft.com, johndeere@deere.com, colin-staunton@sysco.com, shailja.joshi@pepsico.com, robert.j.shearer@exxonmobil.com, shivani.chopra@hp.com, jaclyn.kapnis@libertymutual.com, albert.chang@cvshealth.com, jamie.sjoquist@unfi.com, marie.thornton@verizon.com, lea.wilkes@aig.com, kanchan.yadav@abbvie.com, claire.saines@techdata.com, lisa.mcbreen@morganstanley.com, nicole.lightbourne@rtx.com, tehan.samarasinha@chevron.com, lillie.reader@kroger.com, jill.newham@hcahealthcare.com, michael.schlissel@kohls.com, jesse.karassik@capitalone.com, romuald.veru@chsinc.com, katherine.brown@wellsfargo.com, priyanka.menda@abbott.com, natalie_park@fanniemae.com, julie.irving@elevancehealth.com, kandemir-john@aramark.com, dlee@lowes.com, laura.golder@marriott.com, jflores@meta.com, katherine.dolson@mckesson.com, bharucha.f@pg.com, eric.chang@avnet.com, kmayko@massmutual.com, astaszynska@lenovo.com, jacqueline.macera@cdw.com, beth.herd@valero.com, tofteland.laura@principal.com, david.douglas@adm.com, fbarbieri@walmart.com, mark.wright@travelers.com, jameswalton@ups.com, martinezc@autonation.com, tanya.champaign@fedex.com, fred.clark@target.com, erika.wasmund@pge.com, beth.hickey@energytransfer.com, sarah.tam@cigna.com, epujol@humana.com, tine.thorsen@chubb.com, sean.watson@conocophillips.com, leslie.motiwalla@cbre.com, jim.marasco@mckesson.com, sasa.mester@mastercard.com, lsheraton@paypal.com, mwingate@amfam.com, pieter.nelissen@blackrock.com, carley.cavanaugh@viacomcbs.com, timothy.carr@oracle.com, lori.ham@nm.com, mzanni@amgen.com, jorge.robles@generalmills.com, cnishandar@3m.com, rachel.gilmore@westrock.com, anitakoncabahar@pvh.com, john_crimmins@carmax.com, laura.reed@arrow.com, stefan.vogt@intel.com, rafhanah.hamid@jacobs.com, frank.jorfi@amerisourcebergen.com, wangr@coned.com, lara.mcclelland@pfizer.com, xiying.lin@exeloncorp.com, lynne.pressley@comcast.com, sean.whitehead@halliburton.com, andrew.jacobs@jacobs.com, bollams@altria.com, colleentuohy@guardianlife.com, breynolds@firstenergycorp.com, jacalyn.high@emerson.com, wum@altria.com, anna.altinger@nrg.com, jose.duarte@quantaservices.com, chapmanm@coned.com, kellyn.battrell@allstate.com, kevans@entergy.com, dean.david@aa.com, ktaylor@starbucks.com, wendy.wu@cardinalhealth.com, kimberly.robinson@aa.com, gareth.vale@manpowergroup.com, hshah@newyorklife.com, tara.estee@bestbuy.com, kathleen.lyons@usaa.com, sloanp@nationwide.com, colleendelaney@discover.com, s.sharma@statestreet.com, rthomas@starbucks.com, manderson@ta-petro.com, malbayati@amphenol.com, abdul.rahman@ally.com
+
+// {
+//   user_id: "7bb300fc-e1b4-4dd0-bb82-046ceef1acc6",
+//   emails: [
+//     "umeet_sethi@uhc.com",
+//     " jeviadelpuerto@marathonpetroleum.com",
+//     " kbouwman@apple.com"
+//   ],
+//   upload_type: "validation",
+//   file_type: "text",
+//   file_name: null,
+//   file_size: null
+// }
+
+const Validation = {
+  emails: [
+    "sumeet_sethi@uhc.com",
+    "jeviadelpuerto@marathonpetroleum.com",
+    "kbouwman@apple.com",
+    "aboyle@costco.com",
+    "laura.snape@metlife.com",
+    "darshini.perera@boeing.com",
+    "claudia.neufeld@disney.com",
+    "paolomodolo@microsoft.com",
+    "johndeere@deere.com",
+    "colin-staunton@sysco.com",
+    "shailja.joshi@pepsico.com",
+    "robert.j.shearer@exxonmobil.com",
+    "shivani.chopra@hp.com",
+    "jaclyn.kapnis@libertymutual.com",
+    "albert.chang@cvshealth.com",
+    "jamie.sjoquist@unfi.com",
+    "marie.thornton@verizon.com",
+    "lea.wilkes@aig.com",
+    "kanchan.yadav@abbvie.com",
+    "claire.saines@techdata.com",
+    "lisa.mcbreen@morganstanley.com",
+  ],
+  isEmailsValidated: true,
+  validEmails: [
+    {
+      email: "sumeet_sethi@uhc.com",
+      isRoleBase: false,
+    },
+    {
+      email: "jeviadelpuerto@marathonpetroleum.com",
+      isRoleBase: false,
+    },
+    {
+      email: "kbouwman@apple.com",
+      isRoleBase: false,
+    },
+    {
+      email: "aboyle@costco.com",
+      isRoleBase: false,
+    },
+    {
+      email: "laura.snape@metlife.com",
+      isRoleBase: false,
+    },
+    {
+      email: "darshini.perera@boeing.com",
+      isRoleBase: false,
+    },
+    {
+      email: "claudia.neufeld@disney.com",
+      isRoleBase: false,
+    },
+    {
+      email: "paolomodolo@microsoft.com",
+      isRoleBase: false,
+    },
+    {
+      email: "johndeere@deere.com",
+      isRoleBase: false,
+    },
+    {
+      email: "colin-staunton@sysco.com",
+      isRoleBase: false,
+    },
+    {
+      email: "shailja.joshi@pepsico.com",
+      isRoleBase: false,
+    },
+    {
+      email: "robert.j.shearer@exxonmobil.com",
+      isRoleBase: false,
+    },
+    {
+      email: "shivani.chopra@hp.com",
+      isRoleBase: false,
+    },
+    {
+      email: "jaclyn.kapnis@libertymutual.com",
+      isRoleBase: false,
+    },
+    {
+      email: "albert.chang@cvshealth.com",
+      isRoleBase: false,
+    },
+    {
+      email: "jamie.sjoquist@unfi.com",
+      isRoleBase: false,
+    },
+    {
+      email: "marie.thornton@verizon.com",
+      isRoleBase: false,
+    },
+    {
+      email: "lea.wilkes@aig.com",
+      isRoleBase: false,
+    },
+    {
+      email: "kanchan.yadav@abbvie.com",
+      isRoleBase: false,
+    },
+    {
+      email: "claire.saines@techdata.com",
+      isRoleBase: false,
+    },
+    {
+      email: "lisa.mcbreen@morganstanley.com",
+      isRoleBase: false,
+    },
+  ],
+  invalidEmails: [],
+  roleBasedEmails: [],
+  nonRoleBasedEmails: [
+    {
+      email: "sumeet_sethi@uhc.com",
+      isRoleBase: false,
+    },
+    {
+      email: "jeviadelpuerto@marathonpetroleum.com",
+      isRoleBase: false,
+    },
+    {
+      email: "kbouwman@apple.com",
+      isRoleBase: false,
+    },
+    {
+      email: "aboyle@costco.com",
+      isRoleBase: false,
+    },
+    {
+      email: "laura.snape@metlife.com",
+      isRoleBase: false,
+    },
+    {
+      email: "darshini.perera@boeing.com",
+      isRoleBase: false,
+    },
+    {
+      email: "claudia.neufeld@disney.com",
+      isRoleBase: false,
+    },
+    {
+      email: "paolomodolo@microsoft.com",
+      isRoleBase: false,
+    },
+    {
+      email: "johndeere@deere.com",
+      isRoleBase: false,
+    },
+    {
+      email: "colin-staunton@sysco.com",
+      isRoleBase: false,
+    },
+    {
+      email: "shailja.joshi@pepsico.com",
+      isRoleBase: false,
+    },
+    {
+      email: "robert.j.shearer@exxonmobil.com",
+      isRoleBase: false,
+    },
+    {
+      email: "shivani.chopra@hp.com",
+      isRoleBase: false,
+    },
+    {
+      email: "jaclyn.kapnis@libertymutual.com",
+      isRoleBase: false,
+    },
+    {
+      email: "albert.chang@cvshealth.com",
+      isRoleBase: false,
+    },
+    {
+      email: "jamie.sjoquist@unfi.com",
+      isRoleBase: false,
+    },
+    {
+      email: "marie.thornton@verizon.com",
+      isRoleBase: false,
+    },
+    {
+      email: "lea.wilkes@aig.com",
+      isRoleBase: false,
+    },
+    {
+      email: "kanchan.yadav@abbvie.com",
+      isRoleBase: false,
+    },
+    {
+      email: "claire.saines@techdata.com",
+      isRoleBase: false,
+    },
+    {
+      email: "lisa.mcbreen@morganstanley.com",
+      isRoleBase: false,
+    },
+  ],
+  totalEmails: 21,
+  emailProviders: {
+    "uhc.com": 1,
+    "marathonpetroleum.com": 1,
+    "apple.com": 1,
+    "costco.com": 1,
+    "metlife.com": 1,
+    "boeing.com": 1,
+    "disney.com": 1,
+    "microsoft.com": 1,
+    "deere.com": 1,
+    "sysco.com": 1,
+    "pepsico.com": 1,
+    "exxonmobil.com": 1,
+    "hp.com": 1,
+    "libertymutual.com": 1,
+    "cvshealth.com": 1,
+    "unfi.com": 1,
+    "verizon.com": 1,
+    "aig.com": 1,
+    "abbvie.com": 1,
+    "techdata.com": 1,
+    "morganstanley.com": 1,
+  },
+  roleBase: 0,
+  nonRoleBase: 21,
+};
+
+const test = {
+  user_id: "7bb300fc-e1b4-4dd0-bb82-046ceef1acc6",
+  emails: [
+    "sumeet_sethi@uhc.com",
+    " jeviadelpuerto@marathonpetroleum.com",
+    " kbouwman@apple.com",
+    " aboyle@costco.com",
+    " laura.snape@metlife.com",
+    " darshini.perera@boeing.com",
+    " claudia.neufeld@disney.com",
+    " paolomodolo@microsoft.com",
+    " johndeere@deere.com",
+    " colin-staunton@sysco.com",
+    " shailja.joshi@pepsico.com",
+    " robert.j.shearer@exxonmobil.com",
+    " shivani.chopra@hp.com",
+    " jaclyn.kapnis@libertymutual.com",
+    " albert.chang@cvshealth.com",
+    " jamie.sjoquist@unfi.com",
+    " marie.thornton@verizon.com",
+    " lea.wilkes@aig.com",
+    " kanchan.yadav@abbvie.com",
+    " claire.saines@techdata.com",
+  ],
+  upload_type: "validation",
+  file_type: "text",
+  file_name: null,
+  file_size: null,
+  ip: "105.113.79.49,105.113.79.49, 3.2.48.150",
+  upload: {
+    upload_id: "6bc1981a-4251-42a4-a072-9883af7bd161",
+    user_id: "7bb300fc-e1b4-4dd0-bb82-046ceef1acc6",
+    upload_type: "validation",
+    file_name: null,
+    file_type: "text",
+    file_size: null,
+    total_emails: 20,
+    emails: [
+      "sumeet_sethi@uhc.com",
+      "jeviadelpuerto@marathonpetroleum.com",
+      "kbouwman@apple.com",
+      "aboyle@costco.com",
+      "laura.snape@metlife.com",
+      "darshini.perera@boeing.com",
+      "claudia.neufeld@disney.com",
+      "paolomodolo@microsoft.com",
+      "johndeere@deere.com",
+      "colin-staunton@sysco.com",
+      "shailja.joshi@pepsico.com",
+      "robert.j.shearer@exxonmobil.com",
+      "shivani.chopra@hp.com",
+      "jaclyn.kapnis@libertymutual.com",
+      "albert.chang@cvshealth.com",
+      "jamie.sjoquist@unfi.com",
+      "marie.thornton@verizon.com",
+      "lea.wilkes@aig.com",
+      "kanchan.yadav@abbvie.com",
+      "claire.saines@techdata.com",
+    ],
+    status: "pending",
+    created_at: "2026-01-07T17:53:21.169108+00:00",
+    complete_at: null,
+  },
+  uploadEmails: [],
+  analysis_id: "832cdfb8-6031-431b-a4dc-91f1a1e38c93",
+};
+
+const obj = {
+  ip: "105.113.79.49,105.113.79.49, 3.2.48.150",
+  upload: {
+    upload_id: "6bc1981a-4251-42a4-a072-9883af7bd161",
+    user_id: "7bb300fc-e1b4-4dd0-bb82-046ceef1acc6",
+  },
+};

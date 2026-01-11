@@ -1,32 +1,32 @@
-import validator from "https://esm.sh/validator";
+import validator from "validator";
 
 // prettier-ignore
-const emails = [
-  "sumeet_sethi@uhc.com",
-  " jeviadelpuerto@marathonpetroleum.com",
-  " kbouwman@apple.com",
-  " aboyle@costco.com",
-  " laura.snape@metlife.com",
-  " darshini.perera@boeing.com",
-  " claudia.neufeld@disney.com",
-  " paolomodolo@microsoft.com",
-  " johndeere@deere.com",
-  // ==========================
-  "sumeet_sethi@uhc.com",
-  " jeviadelpuerto@marathonpetroleum.com",
-  " kbouwman@apple.com",
-  " aboyle@costco.com",
-  // ==========================
-  "sumeet_sethi@uhc.com",
-  " jeviadelpuerto@marathonpetroleum.com",
-  " kbouwman@apple.com",
-  " paolomodolo@microsoft.com",
-  " johndeere@deere.com",
-  "roger.support@rci.com" 
-  // ==========================
-];
+// const emails = [
+//   "sumeet_sethi@uhc.com",
+//   " jeviadelpuerto@marathonpetroleum.com",
+//   " kbouwman@apple.com",
+//   " aboyle@costco.com",
+//   " laura.snape@metlife.com",
+//   " darshini.perera@boeing.com",
+//   " claudia.neufeld@disney.com",
+//   " paolomodolo@microsoft.com",
+//   " johndeere@deere.com",
+//   // ==========================
+//   "sumeet_sethi@uhc.com",
+//   " jeviadelpuerto@marathonpetroleum.com",
+//   " kbouwman@apple.com",
+//   " aboyle@costco.com",
+//   // ==========================
+//   "sumeet_sethi@uhc.com",
+//   " jeviadelpuerto@marathonpetroleum.com",
+//   " kbouwman@apple.com",
+//   " paolomodolo@microsoft.com",
+//   " johndeere@deere.com",
+//   "roger.support@rci.com"
+//   // ==========================
+// ];
 
-class Validation {
+export default class Validation {
   constructor(...emails) {
     this.emails = [];
     this.isEmailsValidated = false;
@@ -170,7 +170,3 @@ class Validation {
     return this.nonRoleBase;
   }
 }
-
-const validation = new Validation(emails);
-
-console.dir(validation);
